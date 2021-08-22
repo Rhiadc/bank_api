@@ -42,10 +42,7 @@ defmodule BankApi.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:comeonin, "~> 4.1"},
-      {:argon2_elixir, "~> 1.3"},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 
