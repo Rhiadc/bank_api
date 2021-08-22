@@ -15,7 +15,7 @@ defmodule BankApi.Accounts do
   end
 
 
- #teste
+ #test
   defp insert_user(attrs) do
     %User{}
     |> User.changeset(attrs)
