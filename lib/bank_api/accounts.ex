@@ -1,4 +1,5 @@
 defmodule BankApi.Accounts do
+
   alias BankApi.Repo
   alias BankApi.Accounts.{Account, User}
 
@@ -25,4 +26,5 @@ defmodule BankApi.Accounts do
     |> User.changeset(attrs)
     |> Repo.insert()
   end
+
 end
