@@ -14,6 +14,10 @@ defmodule BankApi.Accounts do
     end
   end
 
+  def teste do
+    %{teste: "teste"}
+  end
+
 
  #teste-novo
   defp insert_user(attrs) do
