@@ -12,7 +12,6 @@ defmodule BankApi.Accounts.User do
     :password,
     :password_confirmation,
     :role
-
   ]
 
   @fields_that_can_be_changed [
@@ -22,7 +21,6 @@ defmodule BankApi.Accounts.User do
     :password,
     :password_confirmation,
     :role
-
   ]
 
   schema "users" do
@@ -43,7 +41,11 @@ defmodule BankApi.Accounts.User do
     |> validate_required(@fields_for_validate)
     |> validate_format(:email, ~r/@/, messsage: "email em formato invalido")
     |> update_change(:email, &String.downcase(&1))
-    |> validate_length(:password, min: 6, max: 100, message: "password must be between 6 and 100 characteres")
+    |> validate_length(:password,
+      min: 6,
+      max: 100,
+      message: "password must be between 6 and 100 characteres"
+    )
     |> validate_confirmation(:password, message: "Passowords does not match")
     |> unique_constraint(:email, message: "Email already in use")
     |> hash_password()
