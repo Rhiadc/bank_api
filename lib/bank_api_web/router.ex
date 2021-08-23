@@ -7,6 +7,10 @@ defmodule BankApiWeb.Router do
 
   scope "/api", BankApiWeb do
     pipe_through :api
+    post "/auth/signup", UserController, :signup
+    get "/user", UserController, :show
+    get "/users", UserController, :index
+    put "/operations/transfer", OperationController, :transfer
   end
 
   # Enables LiveDashboard only for development
