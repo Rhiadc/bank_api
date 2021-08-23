@@ -15,11 +15,6 @@ defmodule BankApi.Accounts do
     end
   end
 
-  def teste do
-    %{teste: "teste"}
-  end
-
-
  #teste-novo
   defp insert_user(attrs) do
     %User{}
@@ -27,4 +22,7 @@ defmodule BankApi.Accounts do
     |> Repo.insert()
   end
 
+  def get_user!(id), do: Repo.get(User, id) |> Repo.preload(:accounts)
+
+  def get_users(), do: Repo.all(User) |> Repo.preload(:accounts)
 end
