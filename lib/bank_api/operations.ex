@@ -12,6 +12,18 @@ defmodule BankApi.Operations do
     end
   end
 
+  def withdraw(f_id, value) do
+    user_account = Accounts.get_account!(f_id)
+    value = Decimal.new(value)
+
+    case (!is_negative?(user_account.balance, value) && !negative_value?(value)) do
+      false -> {:error, "Invalid operation"}
+      true ->
+        {:ok, result} = perform_operation(user_account, value, :sub)
+        {:ok, "Transfer success, value: #{value}, updated balance: #{result.balance}"}
+    end
+  end
+
   defp verify_id?(f_id, t_id), do: f_id == t_id #false
 
   defp negative_value?(value), do: Decimal.negative?(value) #true
@@ -33,6 +45,7 @@ defmodule BankApi.Operations do
 
   def perform_operation(account, value, :sub) do
     account
+
     |> update_account(%{balance: Decimal.sub(account.balance, value)})
   end
 

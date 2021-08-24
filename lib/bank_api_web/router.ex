@@ -11,6 +11,13 @@ defmodule BankApiWeb.Router do
     get "/user", UserController, :show
     get "/users", UserController, :index
     put "/operations/transfer", OperationController, :transfer
+    put "/operations/withdraw", OperationController, :withdraw
+
+    get "/transactions/all", TransactionController, :all
+    get "/transactions/year/:year", TransactionController, :year
+    get "/transactions/year/:year/month/:month", TransactionController, :month
+    get "/transactions/day/:day", TransactionController, :day
+
   end
 
   # Enables LiveDashboard only for development
