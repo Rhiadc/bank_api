@@ -10,6 +10,11 @@ use Mix.Config
 config :bank_api,
   ecto_repos: [BankApi.Repo]
 
+# no arquivo de configuração de cada ambiente você deve sobrescrever isto se é externo
+config :bank_api, BankApi.Accounts.Auth.Guardian,
+  issuer: "bank_api",
+  secret_key: System.get_env("GUARDIAN_SECRET")
+
 # Configures the endpoint
 config :bank_api, BankApiWeb.Endpoint,
   url: [host: "localhost"],

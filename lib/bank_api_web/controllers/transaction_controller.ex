@@ -4,19 +4,34 @@ defmodule BankApiWeb.TransactionController do
 
   action_fallback BankApiWeb.FallbackController
 
-  def all(conn, _)do
-    render(conn, "show.json", transaction: Transactions.all)
+  #plug :verify_permission when action in [:all, :year, :month, :day]
+  def all(conn, _) do
+    render(conn, "show.json", transaction: Transactions.all())
   end
 
   def year(conn, %{"year" => year}) do
-    render(conn, "show.json", transaction: Transactions.all)
+    year = String.to_integer(year)
+    render(conn, "show.json", transaction: Transactions.from_year(year))
   end
 
   def month(conn, %{"year" => year, "month" => month}) do
-    render(conn, "show.json", transaction: Transactions.all)
+    year = String.to_integer(year)
+    month = String.to_integer(month)
+    render(conn, "show.json", transaction: Transactions.from_month(year, month))
   end
 
   def day(conn, %{"day" => day}) do
-    render(conn, "show.json", transaction: Transactions.all)
+    render(conn, "show.json", transaction: Transactions.from_day(day))
+  end
+
+  defp verify_permission(conn, _) do
+    user = Guardian.Plug.current_resource(conn)
+    if user.role == "admin" do
+      conn
+    else
+      conn
+      |> put_status(401)
+      |> json(%{error: "unauthorized"})
+    end
   end
 end

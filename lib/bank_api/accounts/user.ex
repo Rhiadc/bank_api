@@ -46,7 +46,7 @@ defmodule BankApi.Accounts.User do
       max: 100,
       message: "password must be between 6 and 100 characteres"
     )
-    |> validate_confirmation(:password, message: "Passowords does not match")
+    |> validate_confirmation(:password, message: "Passwords does not match")
     |> unique_constraint(:email, message: "Email already in use")
     |> hash_password()
   end
