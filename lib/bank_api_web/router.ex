@@ -5,9 +5,18 @@ defmodule BankApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug BankApi.Accounts.Auth.Pipeline
+  end
+
+  scope "/api/auth", BankApiWeb do
+    post "/signup", UserController, :signup
+    post "/signin", UserController, :signin
+  end
+
   scope "/api", BankApiWeb do
-    pipe_through :api
-    post "/auth/signup", UserController, :signup
+    pipe_through [:api, :auth]
+
     get "/user", UserController, :show
     get "/users", UserController, :index
     put "/operations/transfer", OperationController, :transfer
@@ -17,7 +26,6 @@ defmodule BankApiWeb.Router do
     get "/transactions/year/:year", TransactionController, :year
     get "/transactions/year/:year/month/:month", TransactionController, :month
     get "/transactions/day/:day", TransactionController, :day
-
   end
 
   # Enables LiveDashboard only for development

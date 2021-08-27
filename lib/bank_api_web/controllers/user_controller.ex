@@ -1,6 +1,8 @@
 defmodule BankApiWeb.UserController do
   use BankApiWeb, :controller
   alias BankApi.Accounts
+  alias BankApi.Accounts.Auth.Guardian
+
   action_fallback BankApiWeb.FallbackController
 
   def signup(conn, %{"user" => user}) do
@@ -9,6 +11,14 @@ defmodule BankApiWeb.UserController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, id: account.user.id))
       |> render("account.json", %{account: account})
+    end
+  end
+
+  def signin(conn, %{"email" => email, "password" => password}) do
+    with {:ok, user, token} <- Guardian.authenticate(email, password) do
+      conn
+      |> put_status(:created)
+      |> render("user_auth.json", user: user, token: token)
     end
   end
 

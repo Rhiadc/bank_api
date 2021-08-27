@@ -27,11 +27,40 @@ defmodule BankApi.Transactions do
   end
 
   def calculate_value(transactions) do
-    Enum.map(transactions, fn t->
-      Decimal.to_float(t.value)
+    Enum.reduce(transactions, Decimal.new("0"), fn t, acc ->
+      Decimal.add(acc, t.value)
     end)
-    |>Enum.sum()
   end
+
+  def from_year(year) do
+    start_date = Date.from_erl!({year, 01, 01})
+    end_date = Date.from_erl!({year, 12, 31})
+
+    filter_query(start_date, end_date)
+  end
+
+  def from_month(year, month) do
+    start_date = Date.from_erl!({year, month, 01})
+    days_in_month = start_date |> Date.days_in_month()
+    end_date = Date.from_erl!({year, month, days_in_month})
+
+    filter_query(start_date, end_date)
+  end
+
+  def from_day(date) do
+    query = from t in Transaction, where: t.date == ^Date.from_iso8601!(date)
+
+    Repo.all(query)
+    |> create_payload()
+  end
+
+  def filter_query(start_date, end_date) do
+    query = from t in Transaction, where: t.date >= ^start_date and t.date <= ^end_date
+
+    Repo.all(query)
+    |> create_payload()
+  end
+
   @doc """
   Gets a single transaction.
 
